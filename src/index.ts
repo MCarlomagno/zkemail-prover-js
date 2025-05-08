@@ -1,32 +1,17 @@
-import zke from "@zk-email/sdk";
-import * as fs from 'fs';
-import * as path from 'path';
 
-function log(str: string) {
-    console.log(`[ZkEmail Prover] ${str}`);
-}
+import express from 'express';
+import { prove } from './prove';
 
-async function main() {
-  const zkemail = zke();
+const app = express();
+const port = 3000; // or any port you want
 
-  log("Loading blueprint");
-  const blueprint = await zkemail.getBlueprint("MCarlomagno/openzeppelin_recovery@v1");
+app.get('/prove', async (req, res) => {
+  let verified = await prove();
+  res.send(`Proof is generated and verified: ${verified}`);
+});
 
-  const emailFilePath = path.join(__dirname, 'fixtures', 'Recover.eml');
-  const emailContent: string = fs.readFileSync(emailFilePath, 'utf-8');
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
 
-  log("creating local prover");
-  const prover = blueprint.createProver({ isLocal: false });
 
-  log("proving");
-  const proof = await prover.generateLocalProof(emailContent);
-
-  log("verifying");
-  const verified = await blueprint.verifyProof(proof);
-
-  log(`Proof is valid: ${verified}`);
-}
-
-main()
-    .then(() => log("done"))
-    .catch((e) => console.error(e));
