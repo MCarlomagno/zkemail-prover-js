@@ -1,0 +1,14 @@
+{
+  "name": "zkemail-prover-js",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "ts-node": "^10.9.2"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
+  }
+}
