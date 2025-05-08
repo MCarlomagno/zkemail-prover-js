@@ -1,6 +1,11 @@
 # zkemail-prover-js
 
-A Node.js Express server to generate and verify proofs for emails using the ZK-Email SDK.
+A Node.js server to generate and verify proofs for emails using the ZK-Email SDK. 
+
+Uses [MCarlomagno/openzeppelin_recovery](https://registry.zk.email/b861470a-e2df-4283-bbc6-5db1d6d4d274) blueprint.
+Which requires:
+- The sender must have a valid OpenZeppelin domain.
+- The subject must be "Recover".
 
 ## Running the Server
 
