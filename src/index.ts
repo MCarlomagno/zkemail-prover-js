@@ -1,8 +1,10 @@
 
 
 import express, { Request, Response } from 'express';
+import { generateWitness } from './witness';
+import { generateProof } from './prover';
 import multer from 'multer';
-import zke from "@zk-email/sdk";
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 const port = 3000;
@@ -13,29 +15,8 @@ const upload = multer({ storage: storage });
 
 app.use(express.json());
 
-function log(str: string) {
-  console.log(`[ZkEmail Prover] ${str}`);
-}
-
-function serializeCallData(callData: (bigint[] | bigint[][])[]): string {
-  const flattened: bigint[] = [];
-
-  for (const item of callData) {
-    if (Array.isArray(item[0])) {
-      for (const inner of item as bigint[][]) {
-        flattened.push(...inner);
-      }
-    } else {
-      flattened.push(...(item as bigint[]));
-    }
-  }
-
-  const hexParts = flattened.map(bn => {
-    const hex = bn.toString(16);
-    return hex.length % 2 === 0 ? hex : '0' + hex;
-  });
-
-  return '0x' + hexParts.join('');
+function generateCalldata(publicSignals: any): string {
+  return "";
 }
 
 app.post('/prove', upload.single('email'), async (req: Request, res: Response) => {
@@ -44,30 +25,22 @@ app.post('/prove', upload.single('email'), async (req: Request, res: Response) =
     return;
   }
 
+  const uuid = uuidv4();
   const emailContent = req.file.buffer.toString('utf-8');
 
-  const zkemail = zke();
+  console.log("generating witness... 👀")
 
-  log("Loading blueprint");
-  const blueprint = await zkemail.getBlueprint("MCarlomagno/openzeppelin_recovery@v1");
+  let { witnessPath } = await generateWitness(emailContent, uuid);
 
-  log("creating local prover");
-  const prover = blueprint.createProver({ isLocal: false });
+  console.log("generating proof... 🧐")
 
-  log("proving");
-  const proof = await prover.generateProof(emailContent);
-  const callData = await proof.createCallData();
+  let { proof, publicSignals, calldata } = await generateProof(witnessPath, uuid);
 
-  log("verifying");
-  const verified = await blueprint.verifyProof(proof);
+  console.log("proof generated... 🎉")
 
-  log(`Proof is valid: ${verified}`);
-
-  res.json({ message: "Proof is generated and verified", verified, proof: serializeCallData(callData) });
+  res.json({ message: "Proof generated", proof, publicSignals, proofCalldata: calldata, proofId: uuid });
 });
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-
