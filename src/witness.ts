@@ -16,12 +16,12 @@ const ARTIFACTS_DIR = "src/artifacts";
  * @returns code
  */
 function extractCode(emailContent: string): string {
-    let regex = /Code ([a-fA-F0-9]{64})/;
+    let regex = /Code\s+(?:=\r?\n)?((?:[0-9a-fA-F]{2}(?:=\r?\n)?){32})/;
     let match = emailContent.match(regex);
     if (!match) {
         throw new Error("No code found in email, expected format: Code <64 hex characters>");
     }
-    return match[1];
+    return match[1].replace(/=\r?\n|=<br\s*\/?>/gi, '');
 }
 
 /**
@@ -31,7 +31,7 @@ function extractCode(emailContent: string): string {
  */
 export async function generateWitness(emailContent: string, uuid?: string): Promise<{ inputsPath: string; witnessPath: string }> {
     let emailCode = with0xPrefix(extractCode(emailContent));
- 
+
     const inputs = await relayerUtils.genEmailCircuitInput(
         emailContent,
         emailCode,

@@ -3,7 +3,8 @@
 A prover server using snarkjs to generate proofs for emails.
 
 Emails supported:
-- Accept guardian request.
+- Guardian request.
+- Sign hash.
 
 ## Prerequisites
 
@@ -52,12 +53,12 @@ This endpoint accepts an email file (`.eml`) as form-data and returns a proof, p
 - **Request Type**: `multipart/form-data`
 - **Form Field**: `email` (this field should contain the `.eml` file)
 
-Example email in `fixtures/email_auth_test.eml`
+Example email in `fixtures/guardian_request.eml`
 
 **Example using cURL:**
 
 ```bash
-curl -X POST -F "email=@fixtures/email_auth_test.eml" http://localhost:3000/prove
+curl -X POST -F "email=@fixtures/guardian_request.eml" http://localhost:3000/prove
 ```
 
 > NOTE: this endpoint generates the `witness` and the `proof`, expect it to take a few minutes.
