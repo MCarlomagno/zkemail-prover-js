@@ -5,6 +5,7 @@ A prover server using snarkjs to generate proofs for emails.
 Emails supported:
 - Guardian request.
 - Sign hash.
+- Recovery request.
 
 ## Prerequisites
 
@@ -58,7 +59,7 @@ Example email in `fixtures/guardian_request.eml`
 **Example using cURL:**
 
 ```bash
-curl -X POST -F "email=@fixtures/guardian_request.eml" http://localhost:3000/prove
+curl -X POST -F "email=@fixtures/guardian_request.eml" -F "accountCode=01eb9b204cc24c3baee11accc37d253a9c53e92b1a2cc07763475c135d575b76" http://localhost:3000/prove
 ```
 
 > NOTE: this endpoint generates the `witness` and the `proof`, expect it to take a few minutes.

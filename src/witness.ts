@@ -18,23 +18,26 @@ const ARTIFACTS_DIR = "src/artifacts";
 function extractCode(emailContent: string): string {
     let regex = /Code\s+(?:=\r?\n)?((?:[0-9a-fA-F]{2}(?:=\r?\n)?){32})/;
     let match = emailContent.match(regex);
-    if (!match) {
-        throw new Error("No code found in email, expected format: Code <64 hex characters>");
+    if (match) {
+        return match[1].replace(/=\r?\n|=<br\s*\/?>/gi, '');
     }
-    return match[1].replace(/=\r?\n|=<br\s*\/?>/gi, '');
+    return "";
 }
 
 /**
  * Generates the witness for the email circuit.
  * @param emailContent 
- * @returns { inputsPath: string; witnessPath: string }
+ * @returns { inputsPath: string; accountCode: string; witnessPath: string }
  */
-export async function generateWitness(emailContent: string, uuid?: string): Promise<{ inputsPath: string; witnessPath: string }> {
-    let emailCode = with0xPrefix(extractCode(emailContent));
+export async function generateWitness(emailContent: string, accountCode?: string, uuid?: string): Promise<{ inputsPath: string; witnessPath: string }> {
+    let code = accountCode ?? extractCode(emailContent);
+    if (!code) {
+        throw new Error("No account code provided expected, accountCode must be present either in the email (Code) or as a parameter (accountCode)");
+    }
 
     const inputs = await relayerUtils.genEmailCircuitInput(
         emailContent,
-        emailCode,
+        with0xPrefix(code),
         {
             maxHeaderLength: 1024,
             maxBodyLength: 1024,

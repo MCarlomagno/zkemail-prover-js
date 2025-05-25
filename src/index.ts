@@ -15,10 +15,6 @@ const upload = multer({ storage: storage });
 
 app.use(express.json());
 
-function generateCalldata(publicSignals: any): string {
-  return "";
-}
-
 app.post('/prove', upload.single('email'), async (req: Request, res: Response) => {
   if (!req.file) {
     res.status(400).json({ error: 'No email file uploaded. Please upload a file with field name \'emailFile\'.' });
@@ -27,16 +23,17 @@ app.post('/prove', upload.single('email'), async (req: Request, res: Response) =
 
   const uuid = uuidv4();
   const emailContent = req.file.buffer.toString('utf-8');
+  const accountCode = req.body.accountCode;
 
-  console.log("generating witness... 👀")
+  console.log("generating witness... 👀");
 
-  let { witnessPath } = await generateWitness(emailContent, uuid);
+  let { witnessPath } = await generateWitness(emailContent, accountCode, uuid);
 
-  console.log("generating proof... 🧐")
+  console.log("generating proof... 🧐");
 
   let { proof, publicSignals, calldata } = await generateProof(witnessPath, uuid);
 
-  console.log("proof generated... 🎉")
+  console.log("proof generated... 🎉");
 
   res.json({ message: "Proof generated", proof, publicSignals, proofCalldata: calldata, proofId: uuid });
 });

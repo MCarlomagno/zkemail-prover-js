@@ -1,0 +1,95 @@
+Delivered-To: marcos.carlomagno@openzeppelin.com
+Received: by 2002:aa6:c005:0:b0:2b3:91ad:fc50 with SMTP id xq5csp189518lkb;
+        Sun, 25 May 2025 10:27:20 -0700 (PDT)
+X-Received: by 2002:a05:6512:3ba4:b0:552:24b:1df with SMTP id 2adb3069b0e04-5521568afcamr2847693e87.4.1748194040005;
+        Sun, 25 May 2025 10:27:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1748194039; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gMHMlfaVDf45+P28hjhZH9Oa1hJzRywpY4c2O9yzQ4b90K4CEuDi7dfv6FNEHR8ldl
+         UuOIZOsvb4AkYexkmnx8sVrOkxUdRbjaM5qEolVIblIZvIeS4NDe+oxd9nXz7UGntjZk
+         CPF5aDoQWjuEuzjKlt+yhAtoDNP7yocvK9wYuriA1dUTe6z3g8Bhogj+aH4JqtqY2uz8
+         xgihJbE2rPSk0pxyhly8VWIl0JmZQRbauPiWNp5NUKIrKL+e5WFedkJFanY6mOtL8F18
+         u8v+wXe7Vf1LdgRhKc9kCwaK5sNgSWEYv8Au74yaGfItGaxYk1yfOoFNTOoNykn2Dbzq
+         uO3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=QFG6t8WTcoKY505OY4RyccxklBZn1ii+jgnA0HDgyxE=;
+        fh=mx+uv6I3sDiPXIYV3XOxF/kR2QdquBFxq6vuhj9itGo=;
+        b=AeJa/jCeOwWeulgM5eRoQNOOGTgj6rI1GMJ5VMhkuQNxKEpx35gHiV+IlQYyu0EiYi
+         vL6aeVFB6fAnj2FFRsJveQNmTfmDeVytPzRcfZkI0evcNDSH6nqlRuKvYTrLkNtdt1ku
+         eQkD+A+Z/m3wpS/BAwzFKzhmSu0AP1X8jZpRpGLRGkCzeH85EosEQqaSCMcGGweKBVYi
+         AlteGR12QXJltx7VnvMwVGE3PVNQfUzG/VsDPePh7X+xdUPAb5Wlz6+u+mV/CJvudVsO
+         Qo3qtLA7nGVXuUzkRUMTh5d05tll+BTjeT9EMU+ZIzFprf5RufTeJNNDANhZKz5qsNaA
+         bCRw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=d+aSmwsY;
+       spf=pass (google.com: domain of marcoscarlomagno1@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=marcoscarlomagno1@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=neutral header.i=@openzeppelin.com
+Return-Path: <marcoscarlomagno1@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 2adb3069b0e04-552173a4940sor701970e87.10.2025.05.25.10.27.19
+        for <marcos.carlomagno@openzeppelin.com>
+        (Google Transport Security);
+        Sun, 25 May 2025 10:27:19 -0700 (PDT)
+Received-SPF: pass (google.com: domain of marcoscarlomagno1@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=d+aSmwsY;
+       spf=pass (google.com: domain of marcoscarlomagno1@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=marcoscarlomagno1@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=neutral header.i=@openzeppelin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748194039; x=1748798839; darn=openzeppelin.com;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QFG6t8WTcoKY505OY4RyccxklBZn1ii+jgnA0HDgyxE=;
+        b=d+aSmwsY5EMp6sKA40cHrcixjD9+FYXsYZway/6PH8gzbzBFVnRRO1gTPTX6TeU0ny
+         bu3WyugCRp6GUvy2LQ+owkpvnXffsGpehpJvLHJinj5qF908yA1I9xXXAEplBvR8bDcF
+         YZFUVRqIRyniUc42Vmqgd+ERjsXTGu0NsJ6NlE5744WYH5JYAYgVqVB6vdfXXwxD8z1I
+         ln1An3lSlp9Z9Y2/JhMBYJgKoG/SsJwxCQ5apJlVkJOKiZWj7AU9+tgN06CQ5erlAQCz
+         Bm5ewPfJonfxgrywnUwh//UsBA6fj4JweKQdarMBJROkUyawP8JcnKg+WbBkBoa4JEtq
+         Hq6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748194039; x=1748798839;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QFG6t8WTcoKY505OY4RyccxklBZn1ii+jgnA0HDgyxE=;
+        b=tojWXAz1FpcdS1ZA+xjaze8AWHWAky0eQ+9dywtGcaHbQMSaM8GiDroZTfavHEQw1T
+         uOihxs1RyHFeO24eCyWDD0mJDz9EI9ObleLSFwNZssU5bZQ4yEt3vOZOzvSdg2ixTmVj
+         x7A+ej5ylois1ZUmaYlZxsWoi+NGW3GMAnk2LJZc4tQEnyqFhKI/KTFutMB4pxCUiBE5
+         nFTWvrFcoJMXF4n+eJCBo6FGJakgn4xI1g21e/0kExY17gkxbTCp+nZaX9W/EQXIc5my
+         oUXDgGeCYILIQo2L4tT1B+WWI0BkIPzgqbUGD8tyixhDys3dYDN5sqnUT9f3lU8XxIrw
+         Twtw==
+X-Gm-Message-State: AOJu0YyYM9STHzqLqKgr8skRvChscDN4csk3L2yMGnFye7mztlEhfM64
+	DCXq53pMFrAudZWltM5yvXzxCHSlUbYbAAMQX9Vrrb4i24aXru88uFm9Xlnd15VkcQcTUx3VxLJ
+	OQ0foAfCYC7MAQCwtHqxtFknOis+shvxkHtUI
+X-Gm-Gg: ASbGnctYFyzI6f58tAvvuL6CSi9ocBVWmaHx4JxbMHiOxButRc4jvMdfhelKSleLDd1
+	iGj82J9Eq8t/TWXRthtWyqE0mhZHlM4Zh4t3ylrzUsaBgC9bRpzymDjY6iRAWzAgjvcFhJSBHnn
+	zWm8g2fGsAyMOgIEkO1LUuSOA2D0fGS/iDnOR3H3g6iQWUAg87abFwm9+BtTs=
+X-Google-Smtp-Source: AGHT+IH4I8ISaVLfiWqV52MJvUEUz4e/QgLHLJepdC1yHn4lKk0HdHW1fJwd5oZzMVvg5LrcgPCnZHfy9ArIYSeMCOI=
+X-Received: by 2002:a05:651c:1549:b0:30b:f0da:3ae7 with SMTP id
+ 38308e7fff4ca-3295b26e8f7mr14232161fa.14.1748194039005; Sun, 25 May 2025
+ 10:27:19 -0700 (PDT)
+MIME-Version: 1.0
+From: Marcos Carlomagno <marcoscarlomagno1@gmail.com>
+Date: Sun, 25 May 2025 14:27:07 -0300
+X-Gm-Features: AX0GCFvOP4bR7rrs2HETLApVkcJNlZ92WI0_RI7aXDELdBkojTD9tTXeUfvtldI
+Message-ID: <CA+w+JWbd+WD+Bx_L_KUzV4StwPJb7Zh2na+_5uGk2rcTMfssdQ@mail.gmail.com>
+Subject: [Reply Needed] test
+To: marcos.carlomagno@openzeppelin.com
+Content-Type: multipart/alternative; boundary="000000000000b188c70635f92461"
+
+--000000000000b188c70635f92461
+Content-Type: text/plain; charset="UTF-8"
+
+<div id=3D"zkemail">Set the new owner of
+0xa3A6f0FDd72Ae9936C44cE36151CB4DB3E9949d1 to
+0xa0Ee7A142d267C1f36714E4a8F75612F20a79720</div>
+
+--000000000000b188c70635f92461
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr">&lt;div id=3D&quot;zkemail&quot;&gt;Set the new owner of<br>0xa3A6f0FDd72Ae9936C44cE36151CB4DB3E9949d1 to<br>0xa0Ee7A142d267C1f36714E4a8F75612F20a79720&lt;/div&gt;</div>
+
+--000000000000b188c70635f92461--
