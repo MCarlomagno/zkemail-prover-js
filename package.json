@@ -6,6 +6,7 @@
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/multer": "^1.4.12",
+    "@types/smtp-server": "^3.5.0",
     "@types/snarkjs": "^0.7.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
@@ -18,6 +19,7 @@
     "@zk-email/relayer-utils": "=0.3.7",
     "express": "=5.1.0",
     "multer": "=1.4.5-lts.2",
+    "smtp-server": "^3.13.7",
     "snarkjs": "=0.7.5",
     "uuid": "^11.1.0"
   }

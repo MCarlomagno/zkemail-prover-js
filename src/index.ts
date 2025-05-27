@@ -5,6 +5,8 @@ import { generateWitness } from './witness';
 import { generateProof } from './prover';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
+import { SMTPServer } from 'smtp-server';
+import fs from 'fs';
 
 const app = express();
 const port = 3000;
@@ -41,3 +43,23 @@ app.post('/prove', upload.single('email'), async (req: Request, res: Response) =
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+/**
+ * SMTP server to receive emails
+ */
+let smtpServer = new SMTPServer({
+  onAuth(auth, session, cb) {
+    cb(null, { user: "user" });
+  },
+  authOptional: true,
+  onData(stream, session, cb) {
+    const write = fs.createWriteStream("./message.eml");
+    stream.pipe(write);
+    stream.on("end", () => cb());
+  }
+});
+
+smtpServer.listen(port + 1, () => {
+  console.log(`SMTP server running at http://localhost:${port + 1}`);
+});
+  
